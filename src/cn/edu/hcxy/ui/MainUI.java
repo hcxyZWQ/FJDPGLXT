@@ -155,9 +155,9 @@ public class MainUI {
                 IFlightserver iFlightserver1 = null;
                 CustomerInformation chengke = null;
 
-                for (int i=1;i<=zwq_orderNumber;i++)
+                for (int i=0;i<zwq_orderNumber;i++)
                 {
-                    System.out.println("请填写第"+i+"位乘客的乘客信息");
+                    System.out.println("请填写第"+(i+1)+"位乘客的乘客信息");
                      zwq_id= UUID.randomUUID().toString().replace("-", "");
                     System.out.println(zwq_id);
                     System.out.print("请输入航班编号：");
@@ -173,11 +173,13 @@ public class MainUI {
                     zwq_customerType=sc.next();
                     System.out.print("请输入您的性别:");
                     zwq_sex=sc.next();
-                    if(i!=zongji)
+                    if(i!=zongji-1)
                     {
                         zwq_orderNumber=0;
                     }
                     chengke=new CustomerInformation(zwq_id,zwq_filghtId,zwq_name,zwq_phoneId,zwq_identityCardId,zwq_orderNumber,zwq_customerType,zwq_sex);
+                    assert false;
+                    iFlightserver.insertCustomerInformation(chengke);
                     iFlightserver1=new IFlightserverImpl();
                     zwq_orderNumber=zongji;
 
@@ -210,11 +212,14 @@ public class MainUI {
                     money=sc.nextInt();
                     if(money==1)
                     {
-                        iFlightserver1.insertCustomerInformation(chengke);
+
                         System.out.println("预订成功");
-                        for (int i=1;i<=zongji;i++)
+                        for (int i=0;i<zongji;i++)
                         {
+
+
                             zwq_name=zwq_name1[i];
+                            //System.out.print(zwq_name1[i]);
                             iFlightserver.getFlightInformation(zwq_name);
                         }
 

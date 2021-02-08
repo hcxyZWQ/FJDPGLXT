@@ -248,11 +248,6 @@ public class IFlightDaoImpl implements IFlightDao {
         pstmt.setString(7,zwq_chengke.getZwq_customerType());
         pstmt.setString(8,zwq_chengke.getZwq_sex());
         pstmt.executeUpdate();
-
-        String zwq_filghtId=zwq_chengke.getZwq_filghtId();
-        String zwq_name=zwq_chengke.getZwq_name();
-
-        //UpdateseatsRemainder(zwq_filghtId,zwq_name);
     }
 
     @Override
@@ -263,7 +258,7 @@ public class IFlightDaoImpl implements IFlightDao {
         String username = "sa";
         String password = "123456";
         conn = DriverManager.getConnection(url, username, password);
-        String sql = "SET NOCOUNT ON GO UPDATE flight SET seatsRemainder=seatsRemainder-(SELECT orderNumber FROM Customer WHERE name=?) where flightId=?";
+        String sql = " UPDATE flight SET seatsRemainder=seatsRemainder-(SELECT orderNumber FROM Customer WHERE name=?) where flightId=?";
         pstmt= conn.prepareStatement(sql);//执行sql语句
         pstmt.setString(1,zwq_name);
         pstmt.setString(2,zwq_filghtId);
@@ -292,7 +287,7 @@ public class IFlightDaoImpl implements IFlightDao {
 
     @Override
     public void getFlightInformation(String zwq_name) throws SQLException {
-        FlightInformation flight2=null;
+        FlightInformation flight2 = null;
         CustomerInformation flight1=null;
         String url = "jdbc:sqlserver://localhost:1433;DatabaseName=FJDPGLXT;";
         String username = "sa";
@@ -304,7 +299,6 @@ public class IFlightDaoImpl implements IFlightDao {
 
         pstmt.setString(1,zwq_name);
         ResultSet rs = pstmt.executeQuery();//执行查询
-        int zwq_childPrice = 0;
         while(rs.next())
         {
             String zwq_filghtId1=rs.getString("flightId");
@@ -316,6 +310,7 @@ public class IFlightDaoImpl implements IFlightDao {
 
             flight1= new CustomerInformation(zwq_name1,zwq_sex);
             flight2=new FlightInformation(zwq_filghtId1,zwq_departurePlase1,zwq_destinationPlace1,zwq_departureTime1);
+
         }
 
         System.out.print(flight1.toString(1));System.out.println(flight2.toString(2));
@@ -338,8 +333,9 @@ public class IFlightDaoImpl implements IFlightDao {
         while(rs.next())
         {
             zwq_filghtId1=rs.getString("flightId");
+
         }
-        UpdateseatsRemainder(zwq_filghtId1);
+        //UpdateseatsRemainder(zwq_filghtId1);
     }
     @Override
     public void UpdateseatsRemainder(String zwq_filghtId) throws SQLException {
